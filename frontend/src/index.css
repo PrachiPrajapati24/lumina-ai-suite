@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-dark-950 text-slate-100 font-sans antialiased overflow-x-hidden;
+    font-family: 'Inter', sans-serif;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%),
+      radial-gradient(at 50% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-dark-800/40 backdrop-blur-md border border-dark-700/60 rounded-2xl shadow-glass transition-all duration-300;
+  }
+
+  .glass-card-hover {
+    @apply hover:bg-dark-800/60 hover:border-slate-500/20 hover:shadow-neon-blue;
+  }
+
+  .glass-panel {
+    @apply bg-dark-900/80 backdrop-blur-lg border-r border-dark-700/50 shadow-glass;
+  }
+
+  .glass-input {
+    @apply bg-dark-950/50 border border-dark-700/80 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan/30 transition-all duration-200;
+  }
+
+  .btn-premium-cyan {
+    @apply bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-cyan/90 hover:to-neon-blue/90 text-dark-950 font-bold px-6 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] shadow-neon-cyan active:scale-[0.98];
+  }
+
+  .btn-premium-violet {
+    @apply bg-gradient-to-r from-neon-violet to-neon-purple hover:from-neon-violet/90 hover:to-neon-purple/90 text-slate-100 font-semibold px-6 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] shadow-neon-violet active:scale-[0.98];
+  }
+
+  .btn-glass {
+    @apply bg-dark-800/50 border border-dark-700/80 hover:bg-dark-700/60 text-slate-300 hover:text-slate-100 font-semibold px-6 py-3 rounded-xl transition-all duration-200 active:scale-[0.98];
+  }
+
+  .neon-border {
+    position: relative;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.4), rgba(139, 92, 246, 0.4));
+    padding: 1px; /* border thickness */
+  }
+
+  .neon-border-inner {
+    @apply bg-dark-950/90 backdrop-blur-md rounded-[15px] h-full w-full p-6;
+  }
+
+  .text-gradient-cyan-violet {
+    @apply bg-gradient-to-r from-neon-cyan via-neon-blue to-neon-violet bg-clip-text text-transparent;
+  }
+}
+
+/* Custom Scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-950;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-dark-700 rounded-full hover:bg-dark-700/80;
+}
+
+/* Glassmorphism custom grids */
+.grid-glow {
+  @apply relative overflow-hidden;
+}
+
+.grid-glow::before {
+  content: '';
+  @apply absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-grid-pattern pointer-events-none;
+}
