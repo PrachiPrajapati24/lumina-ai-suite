@@ -103,60 +103,107 @@ export const HistoryPage: React.FC = () => {
     );
   };
 
-  // DELETE SINGLE
-  const handleDelete = async (
-    id: string
-  ) => {
-    if (
-      !window.confirm(
-        "Delete this history item?"
-      )
-    )
-      return;
+ // DELETE MODAL STATE
+const [deleteModal, setDeleteModal] =
+  useState<{
+    open: boolean;
+    id: string | null;
+    type: 'single' | 'all';
+  }>({
+    open: false,
+    id: null,
+    type: 'single',
+  });
 
-    try {
-      await api.delete(`/generations/${id}`);
+// DELETE SINGLE
+const handleDelete = async (
+  id: string
+) => {
+
+  setDeleteModal({
+    open: true,
+    id,
+    type: 'single',
+  });
+};
+
+// DELETE ALL
+const handleDeleteAll = async () => {
+
+  setDeleteModal({
+    open: true,
+    id: null,
+    type: 'all',
+  });
+};
+
+// CONFIRM DELETE
+const confirmDelete = async () => {
+
+  try {
+
+    // SINGLE DELETE
+    if (
+      deleteModal.type ===
+        'single' &&
+      deleteModal.id
+    ) {
+
+      await api.delete(
+        `/generations/${deleteModal.id}`
+      );
 
       setGenerations((prev) =>
-        prev.filter((g) => g._id !== id)
+        prev.filter(
+          (g) =>
+            g._id !==
+            deleteModal.id
+        )
       );
 
       showToast(
-        "Deleted successfully",
-        "success"
+        'Deleted successfully',
+        'success'
       );
 
-      if (selectedItem?._id === id) {
+      if (
+        selectedItem?._id ===
+        deleteModal.id
+      ) {
         setSelectedItem(null);
       }
-    } catch (err) {
-      showToast("Delete failed", "error");
-    }
-  };
 
-  // DELETE ALL
-  const handleDeleteAll = async () => {
-    if (
-      !window.confirm(
-        "Delete ALL history?"
-      )
-    )
-      return;
+    } else {
 
-    try {
-      await api.delete("/generations");
+      // DELETE ALL
+      await api.delete(
+        '/generations/delete-all'
+      );
 
       setGenerations([]);
 
       showToast(
-        "All history deleted",
-        "success"
+        'All history deleted',
+        'success'
       );
-    } catch (err) {
-      showToast("Delete failed", "error");
     }
-  };
 
+  } catch (err) {
+
+    showToast(
+      'Delete failed',
+      'error'
+    );
+
+  } finally {
+
+    setDeleteModal({
+      open: false,
+      id: null,
+      type: 'single',
+    });
+  }
+};
   // PIN
   const handlePin = async (
     id: string
@@ -806,7 +853,191 @@ export const HistoryPage: React.FC = () => {
         )}
 
       </AnimatePresence>
+<AnimatePresence>
 
+  {deleteModal.open && (
+
+    <motion.div
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      exit={{
+        opacity: 0,
+      }}
+      className="
+        fixed
+        inset-0
+        z-[100]
+        bg-black/70
+        backdrop-blur-md
+        flex
+        items-center
+        justify-center
+        p-4
+      "
+    >
+
+      <motion.div
+        initial={{
+          scale: 0.8,
+          opacity: 0,
+          y: 30,
+        }}
+        animate={{
+          scale: 1,
+          opacity: 1,
+          y: 0,
+        }}
+        exit={{
+          scale: 0.8,
+          opacity: 0,
+        }}
+        transition={{
+          type: 'spring',
+          damping: 20,
+          stiffness: 200,
+        }}
+        className="
+          relative
+          w-full
+          max-w-md
+          rounded-3xl
+          border
+          border-red-500/20
+          bg-[#071120]/95
+          backdrop-blur-2xl
+          p-8
+          shadow-2xl
+          shadow-red-500/10
+          overflow-hidden
+        "
+      >
+
+        {/* GLOW */}
+        <div
+          className="
+            absolute
+            inset-0
+            bg-gradient-to-br
+            from-red-500/5
+            to-transparent
+            pointer-events-none
+          "
+        />
+
+        {/* ICON */}
+        <div
+          className="
+            w-16
+            h-16
+            rounded-2xl
+            bg-red-500/10
+            border
+            border-red-500/20
+            flex
+            items-center
+            justify-center
+            mb-6
+          "
+        >
+          <Trash2
+            className="
+              w-8
+              h-8
+              text-red-400
+            "
+          />
+        </div>
+
+        {/* TITLE */}
+        <h2
+          className="
+            text-2xl
+            font-bold
+            text-white
+            mb-3
+          "
+        >
+          Confirm Delete
+        </h2>
+
+        {/* TEXT */}
+        <p
+          className="
+            text-slate-400
+            leading-relaxed
+            mb-8
+          "
+        >
+          {deleteModal.type === 'single'
+            ? 'Are you sure you want to permanently delete this history item?'
+            : 'Are you sure you want to permanently delete ALL history items?'}
+        </p>
+
+        {/* BUTTONS */}
+        <div
+          className="
+            flex
+            items-center
+            justify-end
+            gap-4
+          "
+        >
+
+          <button
+            onClick={() =>
+              setDeleteModal({
+                open: false,
+                id: null,
+                type: 'single',
+              })
+            }
+            className="
+              px-5
+              py-3
+              rounded-xl
+              border
+              border-dark-700
+              bg-dark-900/80
+              text-slate-300
+              hover:bg-dark-800
+              transition-all
+            "
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={confirmDelete}
+            className="
+              px-5
+              py-3
+              rounded-xl
+              bg-gradient-to-r
+              from-red-500
+              to-red-600
+              text-white
+              font-semibold
+              shadow-lg
+              shadow-red-500/20
+              hover:scale-105
+              transition-all
+            "
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </motion.div>
+
+    </motion.div>
+  )}
+
+</AnimatePresence>
     </div>
   );
 };

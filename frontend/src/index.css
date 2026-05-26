@@ -88,3 +88,7 @@
   content: '';
   @apply absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-grid-pattern pointer-events-none;
 }
+select option {
+  background-color: #071120;
+  color: #e2e8f0;
+}
