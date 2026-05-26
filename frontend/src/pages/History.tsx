@@ -15,8 +15,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 
 import {
-  History,
-  Search,
   Clipboard,
   Trash2,
   Sparkles,
@@ -63,7 +61,7 @@ export const HistoryPage: React.FC = () => {
       "all" | "caption" | "blog" | "notes"
     >("all");
 
-  const [sortBy, setSortBy] =
+  const [sortBy] =
     useState<
       "newest" | "oldest" | "longest"
     >("newest");

@@ -24,7 +24,6 @@ import {
 
 import {
   signInWithPopup,
-  sendPasswordResetEmail,
 } from 'firebase/auth';
 
 import {
@@ -76,54 +75,7 @@ export const Login: React.FC = () => {
     );
   }, [email]);
 
-  // FORGOT PASSWORD
-  const handleForgotPassword =
-    async () => {
-
-      if (!email) {
-
-        showToast(
-          'Please enter your email first',
-          'error'
-        );
-
-        return;
-      }
-
-      if (!emailValid) {
-
-        showToast(
-          'Please enter a valid email',
-          'error'
-        );
-
-        return;
-      }
-
-      try {
-
-        await sendPasswordResetEmail(
-          auth,
-          email
-        );
-
-        showToast(
-          'Password reset email sent successfully',
-          'success'
-        );
-
-      } catch (err: any) {
-
-        console.error(err);
-
-        showToast(
-          err.message ||
-            'Failed to send reset email',
-          'error'
-        );
-      }
-    };
-
+ 
   // GOOGLE LOGIN
   const handleGoogleLogin =
     async () => {

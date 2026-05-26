@@ -1,23 +1,21 @@
 import React, { useState } from "react";
 
 import { useAuth } from "../context/AuthContext";
-import { useToast } from "../context/ToastContext";
 
-import api from "../utils/api";
+
+
 
 import {
   User,
   Mail,
   Calendar,
-  Lock,
   Sparkles,
-  Save,
 } from "lucide-react";
 
 export const Settings: React.FC = () => {
+
   const { user } = useAuth();
 
-  const { showToast } = useToast();
 
   const [username, setUsername] =
     useState(user?.username || "");
@@ -25,34 +23,8 @@ export const Settings: React.FC = () => {
   const [email, setEmail] =
     useState(user?.email || "");
 
-  const [saving, setSaving] =
-    useState(false);
 
-  // SAVE PROFILE
-  const handleSave = async () => {
-    try {
-      setSaving(true);
 
-      await api.put("/users/profile", {
-        username,
-        email,
-      });
-
-      showToast(
-        "Profile updated successfully",
-        "success"
-      );
-    } catch (err) {
-      console.error(err);
-
-      showToast(
-        "Failed to update profile",
-        "error"
-      );
-    } finally {
-      setSaving(false);
-    }
-  };
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -183,21 +155,11 @@ export const Settings: React.FC = () => {
 
           </div>
 
-          
-
         </div>
 
       </div>
 
-      {/* SECURITY CARD */}
-      <div className="glass-card p-6 border border-dark-700/50">
-
-        {/* HEADER */}
-        
-        {/* ACTIONS */}
-        
-
-      </div>
+      
 
     </div>
   );
