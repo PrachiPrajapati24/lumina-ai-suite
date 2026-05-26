@@ -22,7 +22,10 @@ const app = express();
 // CORS CONFIG
 app.use(
   cors({
-    origin: '*',
+   origin: [
+  'http://localhost:5173',
+  'https://lumina-ai-suite-nine.vercel.app',
+],
     methods: [
       'GET',
       'POST',
