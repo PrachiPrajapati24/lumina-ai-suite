@@ -2,7 +2,8 @@ import axios from 'axios';
 
 // Create an instance of axios with the backend API baseURL
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL:
+  'https://lumina-ai-suite.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
